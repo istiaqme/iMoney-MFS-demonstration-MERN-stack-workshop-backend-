@@ -17,7 +17,15 @@ async function seedUser(){
 
     if(!user){
         const newUser = new User(dataToSeed);
+        
         await newUser.save();
+        await User.findOneAndUpdate(
+            {phone: dataToSeed.phone},
+            {$set: {
+                createdBy: newUser._id
+            }},
+            {new: true}
+        );
     }
 }
 

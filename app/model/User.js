@@ -20,6 +20,9 @@ const fields = {
     },
     kind: {
         type: String
+    },
+    createdBy: {
+        type: String
     }
     
 }

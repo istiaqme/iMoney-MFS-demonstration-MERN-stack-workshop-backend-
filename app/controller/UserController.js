@@ -31,6 +31,7 @@ module.exports = {
             // User is verified
             // JWT sign
             const tokenData = {
+                _id: user._id,
                 name: user.name,
                 phone: user.phone,
                 kind: user.kind
@@ -80,7 +81,7 @@ module.exports = {
             }
 
             let {name, phone, pin, address, kind, nid} = req.body;
-
+            
             const accountTypes = ['Admin', 'Merchant', 'Agent', 'Personal'];
             const permissions = require('../PermissionDataset');
             const thisUsersPermissions = permissions[req.authData.kind];
@@ -112,7 +113,8 @@ module.exports = {
                     pin : pin,
                     address: address,
                     kind: kind,
-                    nid: nid
+                    nid: nid,
+                    createdBy: req.authData._id
                 });
                 await newUser.save();
 
