@@ -37,7 +37,7 @@ module.exports = {
                 kind: user.kind
             }
             
-            const token = jwt.sign(tokenData, process.env.TOKEN_SECRET, {expiresIn: '1hr'});
+            const token = await jwt.sign(tokenData, process.env.TOKEN_SECRET, {expiresIn: '1hr'});
             return res.status(200).send({
                 suceess: true,
                 msg: "Login Successful.",
