@@ -12,7 +12,7 @@ const permissions = {
             },
             {
                 kind : "Admin Cash In",
-                with: ["Self", "Admin"],
+                with: ["Admin"],
                 minus: "Admin",
                 plus: "Admin",
                 min: 100000.00,
@@ -33,7 +33,7 @@ const permissions = {
             },
             {
                 kind : "Mobile Recharge",
-                with: ["Self"],
+                with: ["Admin"],
                 minus: "Agent",
                 plus: "Admin",
                 min: 20.00,
@@ -62,7 +62,7 @@ const permissions = {
             },
             {
                 kind : "Mobile Recharge",
-                with: ["Self"],
+                with: ["Admin"],
                 minus: "Merchant",
                 plus: "Admin",
                 min: 20.00,
@@ -91,7 +91,7 @@ const permissions = {
             },
             {
                 kind : "Mobile Recharge",
-                with: ["Self"],
+                with: ["Admin"],
                 minus: "Personal",
                 plus: "Admin",
                 min: 20.00,

@@ -15,7 +15,7 @@ const fields = {
         type: String
     },
     kind: {
-        type: String // "Agent Cash In", "Cash Out", "Cash In", "Payment", "Mobile Recharge"
+        type: String 
     },
     status: {
         type: String // 'Success', 'On Hold'

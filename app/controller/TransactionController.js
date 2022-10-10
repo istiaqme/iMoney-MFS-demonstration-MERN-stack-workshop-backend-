@@ -29,9 +29,10 @@ module.exports = {
                 })
             }
 
-            // check from exists
+            
             const fromAccount = await User.findOne({phone: from});
             const toAccount = await User.findOne({phone: to});
+            // check from exists
             if(!fromAccount){
                 return res.status(404).send({
                     success : false,
@@ -39,6 +40,7 @@ module.exports = {
                     body: req.body
                 })
             }
+            // check to exists
             if(!toAccount){
                 if(!kind == "Mobile Recharge"){
                     return res.status(404).send({
@@ -61,8 +63,8 @@ module.exports = {
             }
 
 
-            Helpers.cookTransaction(fromAccount, toAccount, amount, kind, transactionPermission, req.authData);
-
+            const cookedTransaction = await Helpers.cookTransaction(fromAccount, toAccount, amount, kind, transactionPermission, req.authData);
+            console.log(cookedTransaction);
 
 
 

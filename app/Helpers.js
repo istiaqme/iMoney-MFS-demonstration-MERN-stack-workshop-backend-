@@ -14,5 +14,26 @@ module.exports = {
         console.log(transactionKind);
         console.log(transactionSettings);
         console.log(thisUser);
+
+        // Validate with
+        if(transactionSettings.with[0] !== to.kind){
+            if(transactionKind !== "Mobile Recharge"){
+                return {
+                    success: false,
+                    msg: `${transactionKind} is not possible with this account reason is - to account kind is ${to.kind}.`
+                }
+            }
+        }
+        // validate amount min max
+        if(amount < transactionSettings.min && amount > transactionSettings.max){
+            return {
+                success: false,
+                msg: `Amount is not valid.`
+            }
+        }
+
+
+
+        
     }
 }
