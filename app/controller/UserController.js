@@ -25,7 +25,7 @@ module.exports = {
             });
             const validation = joiSchema.validate(req.body);
             if(validation.error){
-                res.send({
+                res.status(500).send({
                     success : false,
                     msg: validation.error.details[0].message,
                     body: req.body
@@ -33,16 +33,17 @@ module.exports = {
             }
 
             const {name, phone, pin, address, kind, nid} = req.body;
+
             const accountTypes = ['Merchant', 'Agent', 'Personal'];
             if(!accountTypes.includes(kind)){
-                res.send({
+                res.status(404).send({
                     success : false,
                     msg: "Kind is Not Supported",
                     body: req.body
                 })
             }
 
-            const user = await User.findOne({phone: phone});
+            const user = await er.findOne({phone: phone});
 
             if(!user){
                 let newUser = new User({
@@ -54,13 +55,14 @@ module.exports = {
                     nid: nid
                 });
                 await newUser.save();
-                res.send({
+                
+                res.status(200).send({
                     suceess: true,
                     data: newUser
                 });
             }
             else{
-                res.send({
+                res.status(400).send({
                     success : false,
                     msg: "This User Exists In Our Wallet",
                     body: req.body
@@ -69,7 +71,11 @@ module.exports = {
             
         }
         catch(error){
-
+            res.status(500).send({
+                success : false,
+                msg: error.message,
+                tag : 'Internal'
+            })
         }
     }
     
