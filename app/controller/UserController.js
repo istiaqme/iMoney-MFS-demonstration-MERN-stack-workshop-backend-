@@ -1,4 +1,5 @@
 const Joi = require('joi');
+const bcrypt = require('bcrypt');
 const User = require('../model/User');
 module.exports = {
     login : async function (req, res) {
@@ -32,7 +33,7 @@ module.exports = {
                 })
             }
 
-            const {name, phone, pin, address, kind, nid} = req.body;
+            let {name, phone, pin, address, kind, nid} = req.body;
 
             const accountTypes = ['Merchant', 'Agent', 'Personal'];
             if(!accountTypes.includes(kind)){
@@ -43,7 +44,9 @@ module.exports = {
                 })
             }
 
-            const user = await er.findOne({phone: phone});
+            const user = await User.findOne({phone: phone});
+            const salt = await bcrypt.genSalt(10);
+            pin = await bcrypt.hash(pin, salt);
 
             if(!user){
                 let newUser = new User({
@@ -55,10 +58,14 @@ module.exports = {
                     nid: nid
                 });
                 await newUser.save();
-                
+
                 res.status(200).send({
                     suceess: true,
-                    data: newUser
+                    msg: "A new user is created.",
+                    data: {
+                        name: name,
+                        phone: phone
+                    }
                 });
             }
             else{
