@@ -2,6 +2,7 @@ const Joi = require('joi');
 const jwt = require('jsonwebtoken');
 const User = require('../model/User');
 const Transaction = require('../model/Transaction');
+const Helpers = require('../Helpers');
 module.exports = {
     transact : async function (req, res) {
         try {
@@ -30,14 +31,18 @@ module.exports = {
 
             // Verify Permission
             const permissions = require('../PermissionDataset');
-            const thisUsersPermissions = permissions[req.authData.kind];
+            console.log(Helpers.verifyTransactionPermission(req.authData, permissions, kind));;
+
+            /* const thisUsersPermissions = permissions[req.authData.kind];
             if(!thisUsersPermissions.transactions.includes(kind)){
                 return res.status(403).send({
                     success : false,
                     msg: "You don't have permission to create " + kind,
                     body: req.body
                 })
-            }
+            } */
+
+
 
 
 

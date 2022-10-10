@@ -1,7 +1,6 @@
 const permissions = {
     Admin : {
         creation: ['Admin', 'Agent', 'Merchant', 'Personal'],
-        transactionsX: ["Agent Cash In", "Admin Cash In"],
         transactions: [
             {
                 kind : "Agent Cash In",
@@ -23,7 +22,6 @@ const permissions = {
     },
     Agent : {
         creation: ['Personal'],
-        transactionsX: ["Cash In", "Mobile Recharge"],
         transactions: [
             {
                 kind : "Cash In",
@@ -45,7 +43,6 @@ const permissions = {
     },
     Merchant: {
         creation: ["Mobile Recharge"],
-        transactionsX: [ "Cash Out", "Payment", "Mobile Recharge"],
         transactions: [
             {
                 kind : "Cash Out",
@@ -75,7 +72,6 @@ const permissions = {
     },
     Personal: {
         creation: [],
-        transactions: [ "Cash Out", "Payment", "Mobile Recharge"],
         transactions: [
             {
                 kind : "Cash Out",
