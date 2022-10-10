@@ -1,13 +1,60 @@
 const Joi = require('joi');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const User = require('../model/User');
 module.exports = {
     login : async function (req, res) {
         try {
+            const {phone, pin, kind} = req.body;
+            // find user
+            const user = await User.findOne({
+                phone: phone,
+                kind: kind
+            });
+            console.log(user);
+            if(!user){
+                res.status(500).send({
+                    success : false,
+                    msg: 'Account not found.',
+                    body: req.body
+                })
+            }
+
+            const pinVerification = await bcrypt.compare(pin, user.pin);
+            if(!pinVerification){
+                res.status(500).send({
+                    success : false,
+                    msg: 'PIN is wrong.',
+                    body: req.body
+                })
+            }
+
+            // User is verified
+            // JWT sign
+            const tokenData = {
+                name: user.name,
+                phone: user.phone,
+                kind: user.kind
+            }
             
+            const token = jwt.sign(tokenData, process.env.TOKEN_SECRET, {expiresIn: '1hr'});
+            res.status(200).send({
+                suceess: true,
+                msg: "Login Successful.",
+                data: {
+                    authToken: token
+                }
+            });
+
+
+
         }
         catch(error){
-            
+            res.status(500).send({
+                success : false,
+                msg: error.message,
+                tag : 'Internal'
+            })
         }
     },
 
@@ -78,11 +125,7 @@ module.exports = {
             
         }
         catch(error){
-            res.status(500).send({
-                success : false,
-                msg: error.message,
-                tag : 'Internal'
-            })
+            console.log(error);
         }
     }
     

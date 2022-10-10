@@ -7,6 +7,7 @@ const fields = {
     },
     phone: {
         type: String
+        
     },
     pin: {
         type: String
