@@ -2,6 +2,7 @@ const express = require('express');
 const server = express();
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+const Seeder = require('./app/Seeder');
 dotenv.config();
 
 server.use(express.json({limit: '50mb'}));
@@ -20,6 +21,9 @@ const mongoDB = mongoose.connection;
 
 mongoDB.on('error', (error) => console.log(error));
 mongoDB.once('open', () => console.log("DB Connected"));
+
+
+Seeder.seedUser();
 
 
 

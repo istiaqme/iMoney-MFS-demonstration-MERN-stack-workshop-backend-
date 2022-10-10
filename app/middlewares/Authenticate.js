@@ -6,21 +6,22 @@ async function authenticate(req, res, next){
         // ['Bearer', 'dry3ufhtjy']
         const token = authHeader.split(' ')[1];
         //const verification = await jwt.verify(token, process.env.TOKEN_SECRET);
-        jwt.verify(token, process.env.TOKEN_SECRET, (error) => {
+        jwt.verify(token, process.env.TOKEN_SECRET, (error, user) => {
             if(error){
-                res.status(401).send({
+                return res.status(401).send({
                     success: false,
                     msg: 'Invalid Token',
                     data: {}
                 })
             }
 
+            req.authData = user;
+
             next();
-        })
-        next();
+        });
     }
     catch(error){
-        res.status(500).send({
+        return res.status(500).send({
             success : false,
             msg: error.message,
             tag : 'Internal'

@@ -10,7 +10,7 @@ router.get('/', (req, res) => {
 });
 
 router.post('/login', UserController.login);
-router.post('/register', UserController.register);
+router.post('/register', Authenticate, UserController.register);
 router.get('/test', Authenticate, UserController.register);
 
 // baseurl/api/login

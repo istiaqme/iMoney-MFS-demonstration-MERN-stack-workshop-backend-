@@ -81,7 +81,18 @@ module.exports = {
 
             let {name, phone, pin, address, kind, nid} = req.body;
 
-            const accountTypes = ['Merchant', 'Agent', 'Personal'];
+            const accountTypes = ['Admin', 'Merchant', 'Agent', 'Personal'];
+            const permissions = require('../PermissionDataset');
+            const thisUsersPermissions = permissions[req.authData.kind];
+            if(!thisUsersPermissions.creation.includes(kind)){
+                return res.status(403).send({
+                    success : false,
+                    msg: "You don't have permission to create " + kind,
+                    body: req.body
+                })
+            }
+
+
             if(!accountTypes.includes(kind)){
                 return res.status(404).send({
                     success : false,
