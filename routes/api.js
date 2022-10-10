@@ -7,7 +7,7 @@ router.get('/', (req, res) => {
 });
 
 router.post('/login', UserController.login);
-router.post('/TempRegister', UserController.TempRegister);
+router.post('/register', UserController.register);
 
 // baseurl/api/login
 
