@@ -11,9 +11,8 @@ module.exports = {
                 phone: phone,
                 kind: kind
             });
-            console.log(user);
             if(!user){
-                res.status(500).send({
+                return res.status(500).send({
                     success : false,
                     msg: 'Account not found.',
                     body: req.body
@@ -22,7 +21,7 @@ module.exports = {
 
             const pinVerification = await bcrypt.compare(pin, user.pin);
             if(!pinVerification){
-                res.status(500).send({
+                return res.status(500).send({
                     success : false,
                     msg: 'PIN is wrong.',
                     body: req.body
@@ -38,7 +37,7 @@ module.exports = {
             }
             
             const token = jwt.sign(tokenData, process.env.TOKEN_SECRET, {expiresIn: '1hr'});
-            res.status(200).send({
+            return res.status(200).send({
                 suceess: true,
                 msg: "Login Successful.",
                 data: {
@@ -50,7 +49,7 @@ module.exports = {
 
         }
         catch(error){
-            res.status(500).send({
+            return res.status(500).send({
                 success : false,
                 msg: error.message,
                 tag : 'Internal'
@@ -73,7 +72,7 @@ module.exports = {
             });
             const validation = joiSchema.validate(req.body);
             if(validation.error){
-                res.status(500).send({
+                return res.status(500).send({
                     success : false,
                     msg: validation.error.details[0].message,
                     body: req.body
@@ -84,7 +83,7 @@ module.exports = {
 
             const accountTypes = ['Merchant', 'Agent', 'Personal'];
             if(!accountTypes.includes(kind)){
-                res.status(404).send({
+                return res.status(404).send({
                     success : false,
                     msg: "Kind is Not Supported",
                     body: req.body
@@ -106,7 +105,7 @@ module.exports = {
                 });
                 await newUser.save();
 
-                res.status(200).send({
+                return res.status(200).send({
                     suceess: true,
                     msg: "A new user is created.",
                     data: {
@@ -116,7 +115,7 @@ module.exports = {
                 });
             }
             else{
-                res.status(400).send({
+                return res.status(400).send({
                     success : false,
                     msg: "This User Exists In Our Wallet",
                     body: req.body
@@ -125,7 +124,11 @@ module.exports = {
             
         }
         catch(error){
-            console.log(error);
+            return res.status(500).send({
+                success : false,
+                msg: error.message,
+                tag : 'Internal'
+            })
         }
     }
     
