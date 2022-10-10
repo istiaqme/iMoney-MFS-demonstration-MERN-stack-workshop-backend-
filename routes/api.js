@@ -7,6 +7,9 @@ router.get('/', (req, res) => {
 });
 
 router.post('/login', UserController.login);
+router.post('/TempRegister', UserController.TempRegister);
+
+// baseurl/api/login
 
 
 module.exports = router;
