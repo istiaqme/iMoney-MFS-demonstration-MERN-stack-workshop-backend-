@@ -29,18 +29,39 @@ module.exports = {
                 })
             }
 
-            // Verify Permission
-            const permissions = require('../PermissionDataset');
-            console.log(Helpers.verifyTransactionPermission(req.authData, permissions, kind));;
-
-            /* const thisUsersPermissions = permissions[req.authData.kind];
-            if(!thisUsersPermissions.transactions.includes(kind)){
-                return res.status(403).send({
+            // check from exists
+            const fromAccount = await User.findOne({phone: from});
+            const toAccount = await User.findOne({phone: to});
+            if(!fromAccount){
+                return res.status(404).send({
                     success : false,
-                    msg: "You don't have permission to create " + kind,
+                    msg: "Kire Beta Chor!",
                     body: req.body
                 })
-            } */
+            }
+            if(!toAccount){
+                if(!kind == "Mobile Recharge"){
+                    return res.status(404).send({
+                        success : false,
+                        msg: `Account does not exist.`,
+                        body: req.body
+                    })
+                }
+            }
+
+            // Verify Permission
+            const permissions = require('../PermissionDataset');
+            const transactionPermission = Helpers.verifyTransactionPermission(req.authData, permissions, kind);
+            if(!transactionPermission){
+                return res.status(403).send({
+                    success : false,
+                    msg: "You don't have permission to transact " + kind,
+                    body: req.body
+                })
+            }
+
+
+            Helpers.cookTransaction(fromAccount, toAccount, amount, kind, transactionPermission, req.authData);
 
 
 
