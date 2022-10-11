@@ -3,10 +3,10 @@ const mongoose = require('mongoose');
 // fields definition
 const fields = {
     from : {
-        type : String
+        type : Object
     },
     to: {
-        type: String
+        type: Object
     },
     amount: {
         type: Number
