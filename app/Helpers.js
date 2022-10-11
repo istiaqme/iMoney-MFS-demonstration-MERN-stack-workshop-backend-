@@ -1,3 +1,4 @@
+const CalculationHelper = require('./CalculationHelper');
 module.exports = {
     verifyTransactionPermission: function (currentUser, permissionDataset, transactionKind){
         const thisUserTransactions = permissionDataset[currentUser.kind].transactions;
@@ -15,6 +16,8 @@ module.exports = {
         console.log(transactionSettings);
         console.log(thisUser);
 
+        const transactions = [];
+
         // Validate with
         if(transactionSettings.with[0] !== to.kind){
             if(transactionKind !== "Mobile Recharge"){
@@ -30,6 +33,11 @@ module.exports = {
                 success: false,
                 msg: `Amount is not valid.`
             }
+        }
+        // check charge
+        let charge = 0;
+        if(transactionSettings.hasOwnProperty('charge')){
+            charge = CalculationHelper.calculateCharge(transactionSettings.charge, amount);
         }
 
 
