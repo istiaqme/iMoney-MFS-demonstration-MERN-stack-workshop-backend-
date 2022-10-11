@@ -7,6 +7,11 @@ const permissions = {
                 with: ["Agent"],
                 minus: "Admin",
                 plus: "Agent",
+                charge: 10, 
+                commission: {
+                    Admin: 20,
+                    Agent: 80
+                },
                 min: 10000.00,
                 max: 1000000.00
             },
@@ -49,11 +54,6 @@ const permissions = {
                 with: ["Agent"],
                 minus: "Merchant",
                 plus: "Agent",
-                charge: 1.8,
-                commission: {
-                    Admin: 0.4,
-                    Agent: 1.4
-                },
                 min: 100.00,
                 max: 50000.00
             },
@@ -85,8 +85,8 @@ const permissions = {
                 plus: "Agent",
                 charge: 1.8,
                 commission: {
-                    Admin: 0.4,
-                    Agent: 1.4
+                    Admin: 20,
+                    Agent: 80
                 },
                 min: 100.00,
                 max: 25000.00
@@ -97,7 +97,7 @@ const permissions = {
                 minus: "Personal",
                 plus: "Merchant",
                 commission: {
-                    Admin: 1.2
+                    Admin: 1.2 // Mul amount er upore
                 },
                 min: 100.00,
                 max: 100000.00

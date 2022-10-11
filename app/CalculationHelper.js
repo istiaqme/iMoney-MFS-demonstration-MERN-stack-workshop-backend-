@@ -1,7 +1,9 @@
-function calculateCharge(percentage, baseAmount){
+function calculateFromPercentage(percentage, baseAmount){
     return (percentage*baseAmount) /100;
 }
 
+
+
 module.exports = {
-    calculateCharge
+    calculateFromPercentage
 }
