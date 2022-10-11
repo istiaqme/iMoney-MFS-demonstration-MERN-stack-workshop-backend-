@@ -69,7 +69,8 @@ module.exports = {
                 pin: Joi.string().min(6).max(6).required(),
                 nid: Joi.string().required(),
                 address: Joi.string().required(),
-                kind: Joi.string().required()
+                kind: Joi.string().required(),
+                balance: Joi.number().min(100).max(50000).required(),
             });
             const validation = joiSchema.validate(req.body);
             if(validation.error){
@@ -80,7 +81,7 @@ module.exports = {
                 })
             }
 
-            let {name, phone, pin, address, kind, nid} = req.body;
+            let {name, phone, pin, address, kind, balance, nid} = req.body;
             
             const accountTypes = ['Admin', 'Merchant', 'Agent', 'Personal'];
             const permissions = require('../PermissionDataset');
@@ -114,6 +115,7 @@ module.exports = {
                     address: address,
                     kind: kind,
                     nid: nid,
+                    balance: balance,
                     createdBy: req.authData._id
                 });
                 await newUser.save();

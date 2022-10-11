@@ -10,7 +10,8 @@ async function seedUser(){
         'pin' : pin,
         'address' : 'Dacca, Bengal Province, East India, Great Britain',
         'nid' : '847747887494',
-        'kind' : 'Admin'
+        'kind' : 'Admin',
+        'balance' : 100000000
     }
 
     const user = await User.findOne({phone: dataToSeed.phone});

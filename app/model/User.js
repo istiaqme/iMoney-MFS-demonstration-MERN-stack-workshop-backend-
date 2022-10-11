@@ -21,6 +21,9 @@ const fields = {
     kind: {
         type: String
     },
+    balance: {
+        type: Number
+    },
     createdBy: {
         type: String
     }
