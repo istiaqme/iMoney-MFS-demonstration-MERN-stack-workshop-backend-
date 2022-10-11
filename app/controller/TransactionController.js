@@ -81,6 +81,24 @@ module.exports = {
                 currentTransaction.createdBy = req.authData._id;
                 let newTransaction = await new Transaction(currentTransaction);
                 await newTransaction.save();
+                // from account balance update
+                await User.findOneAndUpdate(
+                    {phone: currentTransaction.from.phone},
+                    {$set: {
+                        balance: currentTransaction.from.currentBalance
+                    }},
+                    {new: true}
+                );
+                // to account balance update
+                if(currentTransaction.kind !== "Mobile Recharge"){
+                    await User.findOneAndUpdate(
+                        {phone: currentTransaction.to.phone},
+                        {$set: {
+                            balance: currentTransaction.to.currentBalance
+                        }},
+                        {new: true}
+                    );
+                }
             }
 
             return res.status(200).send({
