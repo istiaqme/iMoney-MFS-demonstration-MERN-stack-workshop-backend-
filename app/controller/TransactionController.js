@@ -42,7 +42,9 @@ module.exports = {
             }
             // check to exists
             if(!toAccount){
-                if(!kind == "Mobile Recharge"){
+                
+                if(kind !== "Mobile Recharge"){
+                    
                     return res.status(404).send({
                         success : false,
                         msg: `Account does not exist.`,
@@ -63,14 +65,36 @@ module.exports = {
             }
 
 
-            const cookedTransaction = await Helpers.cookTransaction(fromAccount, toAccount, amount, kind, transactionPermission, req.authData);
-            console.log(cookedTransaction);
+            const cookedTransactions = await Helpers.cookTransaction(fromAccount, toAccount, amount, kind, transactionPermission, req.authData);
+            if(!cookedTransactions.success){
+                return res.status(cookedTransactions.code).send({
+                    success : false,
+                    msg: cookedTransactions.msg,
+                    body: req.body
+                })
+            }
+
+            // insert data
+            for(let i = 0; i < cookedTransactions.transactions.length; i++){
+                let currentTransaction = cookedTransactions.transactions[i];
+                currentTransaction.reference = reference;
+                currentTransaction.createdBy = req.authData._id;
+                let newTransaction = await new Transaction(currentTransaction);
+                await newTransaction.save();
+            }
+
+            return res.status(200).send({
+                success : true,
+                msg: "Transaction Successful",
+                body: {}
+            })
 
 
 
 
         }
         catch(error){
+            console.log(error);
             return res.status(500).send({
                 success : false,
                 msg: error.message,

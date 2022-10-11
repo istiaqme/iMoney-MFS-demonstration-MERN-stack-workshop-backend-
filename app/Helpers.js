@@ -23,6 +23,7 @@ module.exports = {
             if(transactionKind !== "Mobile Recharge"){
                 return {
                     success: false,
+                    code: 401,
                     msg: `${transactionKind} is not possible with this account reason is - to account kind is ${to.kind}.`
                 }
             }
@@ -31,6 +32,7 @@ module.exports = {
         if(amount < transactionSettings.min && amount > transactionSettings.max){
             return {
                 success: false,
+                code: 400,
                 msg: `Amount is not valid.`
             }
         }
@@ -67,6 +69,7 @@ module.exports = {
         if(finalAmount > from.balance){
             return {
                 success: false,
+                code: 400,
                 msg: `Balance Low.`
             }
         }
