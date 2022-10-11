@@ -20,6 +20,9 @@ const fields = {
     status: {
         type: String // 'Success', 'On Hold'
     },
+    trxid: {
+        type: String 
+    },
     createdBy: {
         type: String
     }

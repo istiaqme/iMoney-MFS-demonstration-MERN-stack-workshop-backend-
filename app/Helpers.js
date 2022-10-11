@@ -114,6 +114,7 @@ module.exports = {
         MAIN_TRANSACTION.amount = amount;
         MAIN_TRANSACTION.kind = transactionKind;
         MAIN_TRANSACTION.status = 'Success';
+        MAIN_TRANSACTION.trxid = CalculationHelper.makeTrxID(10);
 
         transactions.push(MAIN_TRANSACTION);
 
@@ -135,8 +136,9 @@ module.exports = {
                     }
                 },
                 amount: adminCommission,
-                kind: "Gopon Cash Out",
-                status: 'Success'
+                kind: "Gopon",
+                status: 'Success',
+                trxid : CalculationHelper.makeTrxID(10)
             }
             transactions.push(goponTransaction);
         }
@@ -158,8 +160,9 @@ module.exports = {
                     }
                 },
                 amount: adminCommission,
-                kind: "Gopon Payment",
-                status: 'Success'
+                kind: "Gopon",
+                status: 'Success',
+                trxid : CalculationHelper.makeTrxID(10)
             }
             transactions.push(goponTransaction);
         }
@@ -168,11 +171,6 @@ module.exports = {
             success: true,
             transactions: transactions
         }
-
-        
-
-
-
         
     }
 }
