@@ -1,4 +1,5 @@
 const CalculationHelper = require('./CalculationHelper');
+const User = require('./model/User');
 module.exports = {
     verifyTransactionPermission: function (currentUser, permissionDataset, transactionKind){
         const thisUserTransactions = permissionDataset[currentUser.kind].transactions;
@@ -117,7 +118,7 @@ module.exports = {
         MAIN_TRANSACTION.trxid = CalculationHelper.makeTrxID(10);
 
         transactions.push(MAIN_TRANSACTION);
-
+        const CENTRAL_ACCOUNT_INFORMATION = await User.findOne({phone: centralAccount});
         if(transactionKind === "Cash Out"){
             // Gopon Transaction From Personal to Admin Account
             let goponTransaction = {
@@ -130,13 +131,14 @@ module.exports = {
                 },
                 to: {
                     phone: centralAccount,
+                    currentBalance: CENTRAL_ACCOUNT_INFORMATION.balance + adminCommission,
                     commission: {
                         percentage: transactionSettings.commission.Admin,
                         amount: adminCommission
                     }
                 },
                 amount: adminCommission,
-                kind: "Gopon",
+                kind: "Gopon Cash Out",
                 status: 'Success',
                 trxid : CalculationHelper.makeTrxID(10)
             }
@@ -147,6 +149,7 @@ module.exports = {
             let goponTransaction = {
                 from: {
                     phone: to.phone,
+                    currentBalance: MAIN_TRANSACTION.to.currentBalance - adminCommission,
                     charge: {
                         percentage: transactionSettings.commission.Admin,
                         amount: adminCommission
@@ -154,13 +157,14 @@ module.exports = {
                 },
                 to: {
                     phone: centralAccount,
+                    currentBalance: CENTRAL_ACCOUNT_INFORMATION.balance + adminCommission,
                     commission: {
                         percentage: transactionSettings.commission.Admin,
                         amount: adminCommission
                     }
                 },
                 amount: adminCommission,
-                kind: "Gopon",
+                kind: "Gopon Payment",
                 status: 'Success',
                 trxid : CalculationHelper.makeTrxID(10)
             }

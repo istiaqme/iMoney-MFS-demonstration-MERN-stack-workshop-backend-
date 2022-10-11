@@ -82,13 +82,16 @@ module.exports = {
                 let newTransaction = await new Transaction(currentTransaction);
                 await newTransaction.save();
                 // from account balance update
-                await User.findOneAndUpdate(
-                    {phone: currentTransaction.from.phone},
-                    {$set: {
-                        balance: currentTransaction.from.currentBalance
-                    }},
-                    {new: true}
-                );
+                if(currentTransaction.kind !== "Gopon Cash Out"){
+                    await User.findOneAndUpdate(
+                        {phone: currentTransaction.from.phone},
+                        {$set: {
+                            balance: currentTransaction.from.currentBalance
+                        }},
+                        {new: true}
+                    );
+                }
+                
                 // to account balance update
                 if(currentTransaction.kind !== "Mobile Recharge"){
                     await User.findOneAndUpdate(
