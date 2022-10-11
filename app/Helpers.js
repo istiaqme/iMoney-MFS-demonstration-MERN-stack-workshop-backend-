@@ -17,6 +17,7 @@ module.exports = {
         console.log(thisUser); */
 
         const transactions = [];
+        const centralAccount = "01711000000";
 
         // Validate with
         if(transactionSettings.with[0] !== to.kind){
@@ -102,10 +103,11 @@ module.exports = {
                 percentage: transactionSettings.commission.Agent,
                 amount: agentCommission
             };
+
         } // To Do - Gopon Transaction Ache
         else{
             MAIN_TRANSACTION_TO.currentBalance = to.balance + amount;
-        } // To Do - Gopon Transaction - jodio payment hoise merchant er number, kintu commission pabe Admin Merchant er kach theke
+        } // To Do - Gopon Transaction - jodio payment hoise merchant er number a, kintu commission pabe Admin Merchant er kach theke
 
 
         MAIN_TRANSACTION.to = MAIN_TRANSACTION_TO;
@@ -114,6 +116,53 @@ module.exports = {
         MAIN_TRANSACTION.status = 'Success';
 
         transactions.push(MAIN_TRANSACTION);
+
+        if(transactionKind === "Cash Out"){
+            // Gopon Transaction From Personal to Admin Account
+            let goponTransaction = {
+                from: {
+                    phone: from.phone,
+                    charge: {
+                        percentage: transactionSettings.commission.Admin,
+                        amount: adminCommission
+                    }
+                },
+                to: {
+                    phone: centralAccount,
+                    commission: {
+                        percentage: transactionSettings.commission.Admin,
+                        amount: adminCommission
+                    }
+                },
+                amount: adminCommission,
+                kind: "Gopon Cash Out",
+                status: 'Success'
+            }
+            transactions.push(goponTransaction);
+        }
+        else if(transactionKind === "Payment"){
+            // Gopon Transaction From Personal to Admin Account
+            let goponTransaction = {
+                from: {
+                    phone: to.phone,
+                    charge: {
+                        percentage: transactionSettings.commission.Admin,
+                        amount: adminCommission
+                    }
+                },
+                to: {
+                    phone: centralAccount,
+                    commission: {
+                        percentage: transactionSettings.commission.Admin,
+                        amount: adminCommission
+                    }
+                },
+                amount: adminCommission,
+                kind: "Gopon Payment",
+                status: 'Success'
+            }
+            transactions.push(goponTransaction);
+        }
 
         return {
             success: true,

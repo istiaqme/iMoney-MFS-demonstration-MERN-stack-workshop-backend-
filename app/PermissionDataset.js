@@ -62,6 +62,9 @@ const permissions = {
                 with: ["Merchant"],
                 minus: "Merchant",
                 plus: "Merchant",
+                commission: {
+                    Admin: 1.2 // Mul amount er upore
+                },
                 min: 100.00,
                 max: 100000.00
             },
